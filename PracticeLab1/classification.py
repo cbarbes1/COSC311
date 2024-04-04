@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 from scipy import stats
 from sklearn.cluster import KMeans
 from sklearn.datasets import load_digits
@@ -27,13 +28,23 @@ def hand_written_digits():
     print(conf_mat)
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred))
-    sns.heatmap(conf_mat, fmt='.1f', cmap='Blues')
     
-
-
-
-
+    sns.heatmap(conf_mat, square=True, annot=True, fmt='d', cbar=False,
+            xticklabels=digits.target_names,
+            yticklabels=digits.target_names)
+    plt.xlabel('true label')
+    plt.ylabel('predicted label')
+    plt.show()
     
+def cluster_GPS_data():
+    with open('housing.csv', 'r') as file:
+        data = pd.read_csv(file)
+
+    plt.scatter(data['longitude'].values, data['latitude'].values, s=50)
 
 if __name__ == "__main__":
-    hand_written_digits()
+    choice = input("Enter which program you would like to run: ")
+    if(choice == "Digits"):
+        hand_written_digits()
+    elif(choice == "Housing"):
+        cluster_GPS_data()
