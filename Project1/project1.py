@@ -112,7 +112,7 @@ y = data.iloc[:, -1].values
 
  
 # split training and test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=7)
 
 print(X_train)
 
@@ -152,7 +152,7 @@ plt.show()
 
 plot_result(knn, X_test, y_test)
 
-DT = DecisionTreeClassifier(class_weight='balanced', max_features=3)
+DT = DecisionTreeClassifier(class_weight='balanced')
 tree = DT.fit(X_train, y_train)
 y_pred = DT.predict(X_test)
 
@@ -187,7 +187,7 @@ plt.show()
 accuracies = []
 for i in np.arange(0.1, 0.60, 0.10):
     # split training and test set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=i)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=i, random_state=7)
     # KNN classification
 
     knn = KNeighborsClassifier(n_neighbors=4, weights='distance')
