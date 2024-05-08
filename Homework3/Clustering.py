@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
 import seaborn as sns; sns.set() 
 
+# function to find best number of components
 def PCA_find(X):
     for i in range(1, 65):
         pca = PCA(n_components = i)
@@ -20,29 +21,32 @@ def PCA_find(X):
         if cumulative_variance >= 0.85:
             return i
 
+# load the dataset
 digits = load_digits()
 
 X = digits['data']
 y = digits['target']
 
+# scale the dataset
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 
+# do the analysis
 num_components = PCA_find(X)
-
 print(f'Number of components to keep at least 85% variance: {num_components}')
 
+# get the actual components
 pca = PCA(n_components=num_components)
 X_new = pca.fit_transform(X)
 X_new = pca.transform(X)
-
+ # kmean cluster the dataset
 kmeans = KMeans(n_clusters=10, random_state=42, algorithm='elkan')
 clusters = kmeans.fit_predict(X_new)
 print("Centers of the Clusters: ")
-print(kmeans.cluster_centers_.shape)
+print(kmeans.cluster_centers_)
 
 labels = np.zeros_like(clusters)
-for i in range(10):
+for i in range(64):
     mask = (clusters == i)
     labels[mask] = mode(digits.target[mask])[0]
 
